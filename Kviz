@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Erdélyi Fejedelemség Kvíz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #eee, #d4c4a8);
+      text-align: center;
+      padding: 30px;
+    }
+    .quiz-container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 { color: #593202; }
+    .answers button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #f2e1b3;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .answers button:hover {
+      background: #e0c17b;
+    }
+    .correct { background: #a6e3a1 !important; }
+    .wrong { background: #f3a1a1 !important; }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <h1>Erdélyi Fejedelemség Kvíz</h1>
+  <h2 id="question-text"></h2>
+  <div class="answers" id="answers"></div>
+  <p id="feedback"></p>
+</div>
+
+<script>
+const questions = {
+  "kerdes1": {
+    text: "Ki volt az első erdélyi fejedelem?",
+    answers: ["Báthory István", "Szapolyai János", "Bethlen Gábor", "Apafi Mihály"],
+    correct: 1
+  },
+  "kerdes2": {
+    text: "Melyik fejedelem idején virágzott fel leginkább Erdély?",
+    answers: ["Báthory Zsigmond", "Bethlen Gábor", "I. Rákóczi György", "II. Rákóczi Ferenc"],
+    correct: 1
+  },
+  "kerdes3": {
+    text: "Melyik fejedelem vezette a szabadságharcot a Habsburgok ellen?",
+    answers: ["Báthory István", "Apafi Mihály", "II. Rákóczi Ferenc", "Bethlen Gábor"],
+    correct: 2
+  },
+  "kerdes4": {
+    text: "Melyik város volt az Erdélyi Fejedelemség fővárosa?",
+    answers: ["Gyulafehérvár", "Kolozsvár", "Marosvásárhely", "Brassó"],
+    correct: 0
+  }
+};
+
+// Az URL-ből olvassa ki, melyik kérdésre mutat a QR
+const query = window.location.search.substring(1);
+const current = questions[query] || questions["kerdes1"];
+
+document.getElementById("question-text").innerText = current.text;
+
+const answersDiv = document.getElementById("answers");
+current.answers.forEach((ans, i) => {
+  const btn = document.createElement("button");
+  btn.innerText = ans;
+  btn.onclick = () => checkAnswer(btn, i);
+  answersDiv.appendChild(btn);
+});
+
+function checkAnswer(button, index) {
+  const allBtns = document.querySelectorAll("button");
+  allBtns.forEach(b => b.disabled = true);
+  if (index === current.correct) {
+    button.classList.add("correct");
+    document.getElementById("feedback").innerText = "✅ Helyes válasz!";
+  } else {
+    button.classList.add("wrong");
+    document.getElementById("feedback").innerText = "❌ Sajnos nem ez a helyes válasz.";
+  }
+}
+</script>
+
+</body>
+</html>
